@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 24" width="160" height="96">
+  <!-- SD Mediates mark: two overlapping rings. For light backgrounds. -->
+  <circle cx="13" cy="12" r="10" fill="none" stroke="#13343b" stroke-width="2.5"/>
+  <circle cx="27" cy="12" r="10" fill="none" stroke="#3e7c82" stroke-width="2.5"/>
+</svg>

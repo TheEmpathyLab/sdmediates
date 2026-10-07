@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 40" width="128" height="80">
+  <!-- Service icon: Partners & co-founders -->
+  <path d="M6 34 L22 6 L38 34 Z" fill="#a9c2b4" style="mix-blend-mode:multiply"/>
+  <path d="M26 34 L42 6 L58 34 Z" fill="#3e7c82" fill-opacity="0.8" style="mix-blend-mode:multiply"/>
+  <path d="M26 34 L32 23.5 L38 34 Z" fill="#e9a93a"/>
+</svg>
