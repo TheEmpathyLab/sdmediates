@@ -112,7 +112,8 @@ function markExistingAsHandled() {
 // ---------- Email content ----------
 
 function sendConfirmation_(submission) {
-  const firstName = (submission.name || '').trim().split(/\s+/)[0];
+  const rawFirst = (submission.name || '').trim().split(/\s+/)[0];
+  const firstName = rawFirst.charAt(0).toUpperCase() + rawFirst.slice(1); // "shelton" → "Shelton"
   const greeting = firstName ? `Hi ${firstName},` : 'Hi there,';
 
   // Deliberately does NOT repeat what the visitor wrote: if someone typed another
