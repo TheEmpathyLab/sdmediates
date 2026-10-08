@@ -451,3 +451,16 @@ a { color: var(--tide); text-underline-offset: 0.18em; }
 .contact-form .hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 .form-status { margin: 0; font-family: var(--font-display); font-size: 0.95rem; color: var(--ink); }
 .form-status:empty { display: none; }
+.form-note { margin: 0; font-family: var(--font-display); font-size: 0.85rem; color: var(--muted); }
+.site-footer a { color: inherit; }
+
+/* ---------- Simple pages (privacy, 404) ---------- */
+.page { padding-block: clamp(3rem, 7vw, 5.5rem); }
+.page-body { max-width: 42rem; }
+.page-body h1 { font-size: clamp(2.2rem, 5vw, 3.25rem); }
+.page-body h2 { font-size: 1.4rem; margin-top: 2.25rem; }
+.page-body ul { padding-left: 1.2em; margin: 0 0 1em; }
+.page-body li { margin-bottom: 0.4em; }
+.page-meta { font-family: var(--font-display); font-size: 0.9rem; color: var(--muted); }
+.page-404 { min-height: calc(100vh - var(--header-h) - 6rem); display: grid; align-items: center; }
+.page-404 .venn { max-width: 16rem; margin-bottom: 2rem; }

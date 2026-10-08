@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /design-system.html
+
+Sitemap: https://sdmediates.com/sitemap.xml
