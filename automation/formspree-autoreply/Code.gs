@@ -127,7 +127,7 @@ function sendConfirmation_(submission) {
     '',
     'Shelton Davis, MID',
     'SD Mediates',
-    'hello@sdmediates.com · (714) 420-2715',
+    'hello@sdmediates.com · (678) 310-8503',
     'https://sdmediates.com',
   ].join('\n');
 
@@ -139,7 +139,7 @@ function sendConfirmation_(submission) {
       <p style="margin-top:28px;font-family:'Avenir Next','Segoe UI',Arial,sans-serif;font-size:14px;line-height:1.5;color:#51646a">
         <strong style="color:#13343b">Shelton Davis, MID</strong><br>
         SD Mediates<br>
-        <a href="mailto:hello@sdmediates.com" style="color:#3e7c82">hello@sdmediates.com</a> · (714) 420-2715<br>
+        <a href="mailto:hello@sdmediates.com" style="color:#3e7c82">hello@sdmediates.com</a> · (678) 310-8503<br>
         <a href="https://sdmediates.com" style="color:#3e7c82">sdmediates.com</a>
       </p>
     </div>`;

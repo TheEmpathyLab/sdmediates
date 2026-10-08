@@ -13,7 +13,7 @@ It runs inside your own Google account. It's free (Workspace allows about 1,500 
 >
 > Nothing you've shared commits you to anything. If you'd like to add more before we talk, just reply to this email.
 >
-> Shelton Davis, MID · SD Mediates · hello@sdmediates.com · (714) 420-2715
+> Shelton Davis, MID · SD Mediates · hello@sdmediates.com · (678) 310-8503
 
 To change the wording, edit `sendConfirmation_()` in `Code.gs`. There's a plain-text and an HTML version; keep them matching.
 
