@@ -1,3 +1,5 @@
 .DS_Store
 # full-size originals; the site uses the web copies in site/images/
 site/images/*-bw.jpg
+# personal agenda list, edited by hand, not published
+agenda-notes.md
