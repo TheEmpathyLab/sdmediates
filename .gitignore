@@ -3,3 +3,5 @@
 site/images/*-bw.jpg
 # personal agenda list, edited by hand, not published
 agenda-notes.md
+# session notes: local only, never committed or published
+sessions/
