@@ -109,6 +109,65 @@ function markExistingAsHandled() {
   console.log(`Marked ${count} existing submission(s) as handled.`);
 }
 
+// ---------- Counting contacts ----------
+
+/**
+ * Counts the people who reached out, month by month, straight from Gmail.
+ * Run it by hand; it reads only, sends nothing, and stores nothing.
+ *
+ * Counts human contact only, not site traffic:
+ *  - form: contact-form submissions (Formspree notifications)
+ *  - email: messages sent directly to hello@sdmediates.com, not from you or Formspree
+ *  - people: distinct email addresses across both (someone who uses the form, then replies, counts once)
+ * Phone calls aren't in Gmail; check your phone's call log for those.
+ */
+function countContacts(months) {
+  months = months || 6;
+  const me = Session.getActiveUser().getEmail().toLowerCase();
+  const now = new Date();
+
+  for (let i = months - 1; i >= 0; i--) {
+    const start = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const end = new Date(now.getFullYear(), now.getMonth() - i + 1, 1);
+    const range = ` after:${gmailDate_(start)} before:${gmailDate_(end)}`;
+    const inMonth = (m) => m.getDate() >= start && m.getDate() < end;
+    const people = {};
+    let form = 0;
+    let email = 0;
+
+    // Gmail search matches whole conversations, so each message is checked on its own.
+    for (const m of searchMessages_('from:noreply@formspree.io subject:("intro call request")' + range)) {
+      if (!inMonth(m) || !/formspree\.io/i.test(m.getFrom())) continue;
+      form++;
+      const address = parseSubmission_(m).email;
+      if (address) people[address] = true;
+    }
+    for (const m of searchMessages_(`to:${CONFIG.FROM} -from:formspree.io -from:me` + range)) {
+      const from = extractEmail_(m.getFrom());
+      const sentToHello = (m.getTo() + ',' + m.getCc()).toLowerCase().indexOf(CONFIG.FROM) !== -1;
+      if (!inMonth(m) || !from || from === me || from === CONFIG.FROM || /formspree\.io$/.test(from) || !sentToHello) continue;
+      email++;
+      people[from] = true;
+    }
+
+    const label = Utilities.formatDate(start, Session.getScriptTimeZone(), 'yyyy-MM');
+    console.log(`${label}  people: ${Object.keys(people).length}  form: ${form}  email: ${email}`);
+  }
+}
+
+function searchMessages_(query) {
+  const messages = [];
+  for (let offset = 0; ; offset += 100) {
+    const threads = GmailApp.search(query, offset, 100);
+    threads.forEach((t) => messages.push(...t.getMessages()));
+    if (threads.length < 100) return messages;
+  }
+}
+
+function gmailDate_(d) {
+  return Utilities.formatDate(d, Session.getScriptTimeZone(), 'yyyy/MM/dd');
+}
+
 // ---------- Email content ----------
 
 function sendConfirmation_(submission) {

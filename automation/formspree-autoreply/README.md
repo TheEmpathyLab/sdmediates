@@ -37,6 +37,19 @@ To change the wording, edit `sendConfirmation_()` in `Code.gs`. There's a plain-
 - **To pause it:** run `removeTrigger`. **To restart it:** run `installTrigger`.
 - **To see what happened:** in script.google.com, open the project and go to **Executions**. Each run logs who was replied to or skipped.
 
+## Counting who reached out
+The site has no analytics on purpose. To see how many people got in touch, run **`countContacts`** from the function dropdown, then open the log (**Execution log**, or **Executions**). You get one line per month for the last 6 months:
+
+```
+2026-11  people: 3  form: 2  email: 2
+```
+
+- **form:** contact-form submissions.
+- **email:** messages sent straight to hello@sdmediates.com (not from you, not from Formspree).
+- **people:** distinct email addresses across both, so someone who fills in the form and then replies counts once.
+
+It reads Gmail and nothing else. It sends nothing, saves nothing, and doesn't log names or addresses. Phone calls aren't in Gmail, so check your phone's call log for those. For a different period, change the `6` default in `countContacts`.
+
 ## Safeguards
 - **Each submission is replied to once.** It's tracked by message ID, not by Gmail label. Gmail groups submissions with the same subject into one conversation, and labels apply to whole conversations, so label-based tracking would skip later submissions.
 - **At most one auto-reply per email address per 24 hours.** This limits misuse if someone repeatedly submits the form with another person's address.
