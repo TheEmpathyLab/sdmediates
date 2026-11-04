@@ -54,7 +54,8 @@ It reads Gmail and nothing else. It sends nothing, saves nothing, and doesn't lo
 - **Each submission is replied to once.** It's tracked by message ID, not by Gmail label. Gmail groups submissions with the same subject into one conversation, and labels apply to whole conversations, so label-based tracking would skip later submissions.
 - **At most one auto-reply per email address per 24 hours.** This limits misuse if someone repeatedly submits the form with another person's address.
 - **The visitor's message is never repeated back.** If someone typed another person's address, that person learns nothing about what was written.
-- **At most 20 replies per run.** Submissions are only checked from the last 2 days.
+- **At most 20 replies per run.** Submissions are only checked from the last 2 days. Anything over the cap waits for the next run, and its conversation isn't labeled until then.
+- **A failed run never causes repeat emails.** The record of who's been replied to is saved even if the run stops partway. If a single send fails (a bad address, or Google's daily sending limit), it's logged under **Executions**, that visitor isn't retried, and the run moves on. You'll want to reply to them yourself.
 
 ## If something goes wrong
 | Symptom | Likely cause |

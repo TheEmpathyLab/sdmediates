@@ -33,36 +33,51 @@ function processNewSubmissions() {
   const state = loadState_(props);
   const label = GmailApp.getUserLabelByName(CONFIG.LABEL) || GmailApp.createLabel(CONFIG.LABEL);
   let sent = 0;
+  let capped = false;
 
-  const threads = GmailApp.search(CONFIG.QUERY, 0, 50);
-  for (const thread of threads) {
-    for (const message of thread.getMessages()) {
-      if (sent >= CONFIG.MAX_PER_RUN) break;
-      const id = message.getId();
-      if (state.messages[id]) continue;
+  // Always save, even if the run fails partway: otherwise the record of replies already
+  // sent in this run is lost, and the next run emails those visitors again.
+  try {
+    const threads = GmailApp.search(CONFIG.QUERY, 0, 50);
+    for (const thread of threads) {
+      for (const message of thread.getMessages()) {
+        const id = message.getId();
+        if (state.messages[id]) continue;
+        if (sent >= CONFIG.MAX_PER_RUN) {
+          capped = true; // the rest waits for the next run
+          break;
+        }
 
-      const submission = parseSubmission_(message);
-      state.messages[id] = Date.now(); // mark first, so a failure never causes repeat sends
+        const submission = parseSubmission_(message);
+        state.messages[id] = Date.now(); // mark first, so a failure never causes repeat sends
 
-      if (!submission.email) {
-        console.warn(`No visitor email found in message ${id}; skipped.`);
-        continue;
+        if (!submission.email) {
+          console.warn(`No visitor email found in message ${id}; skipped.`);
+          continue;
+        }
+        const lastSent = state.addresses[submission.email];
+        if (lastSent && Date.now() - lastSent < CONFIG.ONE_REPLY_PER_ADDRESS_HOURS * 3600e3) {
+          console.log(`Already replied to ${submission.email} recently; skipped.`);
+          continue;
+        }
+
+        // One failed send is logged and skipped (not retried), and the run carries on.
+        try {
+          sendConfirmation_(submission);
+        } catch (err) {
+          console.error(`Auto-reply to ${submission.email} failed (message ${id}); not retried: ${err}`);
+          continue;
+        }
+        state.addresses[submission.email] = Date.now();
+        sent++;
+        console.log(`Auto-replied to ${submission.email}.`);
       }
-      const lastSent = state.addresses[submission.email];
-      if (lastSent && Date.now() - lastSent < CONFIG.ONE_REPLY_PER_ADDRESS_HOURS * 3600e3) {
-        console.log(`Already replied to ${submission.email} recently; skipped.`);
-        continue;
-      }
-
-      sendConfirmation_(submission);
-      state.addresses[submission.email] = Date.now();
-      sent++;
-      console.log(`Auto-replied to ${submission.email}.`);
+      if (capped) break; // don't label threads that weren't fully processed
+      thread.addLabel(label);
     }
-    thread.addLabel(label);
+  } finally {
+    saveState_(props, state);
   }
-
-  saveState_(props, state);
 }
 
 /** Sends the sample confirmation to you only. Use it to check wording and the From address. */
